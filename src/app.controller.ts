@@ -1,18 +1,32 @@
-import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Query,
+  UseGuards,
+  SetMetadata,
+} from '@nestjs/common';
 import { AppService } from './app.service';
 
 import { ApiKeyGuard } from './auth/guards/api-key.guard';
 
+//importamos nuestro decorator personalizado
+import { Public } from './auth/decorators/public.decorator';
+
+@UseGuards(ApiKeyGuard)
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
+  //@SetMetadata('isPublic', true)
+  @Public() //aplicamos nuestro decorator personalizado
   @Get()
   getHello(): string {
     return this.appService.getHello();
   }
 
-  @UseGuards(ApiKeyGuard)
+  //@UseGuards(ApiKeyGuard)
+  @SetMetadata('isPublic', true)
   @Get('nuevo')
   newEndpoint() {
     return 'yo soy nuevo';
