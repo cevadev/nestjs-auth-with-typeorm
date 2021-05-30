@@ -16,11 +16,13 @@ export class AuthService {
   async validateUser(email: string, password: string) {
     //traemos al usuario de la BD con su password en formato hash
     const user = await this.userService.findByEmail(email);
-    //password enviado coincide con el password de BD retorna true
-    const isMatch = await bcrypt.compare(password, user.password);
 
-    if (user && isMatch) {
-      return user;
+    if (user) {
+      //password enviado coincide con el password de BD retorna true
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (isMatch) {
+        return user;
+      }
     }
 
     return null;

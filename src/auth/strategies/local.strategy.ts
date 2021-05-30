@@ -12,15 +12,19 @@ import { AuthService } from '../services/auth.service';
 export class LocalStrategy extends PassportStrategy(Strategy, 'local') {
   constructor(private authService: AuthService) {
     //llamamos al constructor de la clase PassportStrategy
-    super();
+    super({
+      //cambiamos el naming de los parametros de usernameField y passwordField
+      usernameField: 'email',
+      passwordField: 'password',
+    });
   }
 
   async validate(email: string, password: string) {
-    const user = this.authService.validateUser(email, password);
+    const user = await this.authService.validateUser(email, password);
 
     if (!user) {
       //usuario no autorizado
-      throw new UnauthorizedException('Not allowed');
+      throw new UnauthorizedException('Not allowed: email or password wrong');
     }
 
     //todo ok
