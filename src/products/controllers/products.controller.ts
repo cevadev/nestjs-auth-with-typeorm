@@ -25,27 +25,39 @@ import {
 import { ProductsService } from './../services/products.service';
 
 //estrategia de guard
-import { AuthGuard } from '@nestjs/passport';
+//i//mport { AuthGuard } from '@nestjs/passport';
+
+//importamos nuestro guardian extendido
+import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
+
+//traemos nuestros decorator isPublic
+import { Public } from '../../auth/decorators/public.decorator';
 
 //protegemos todos los endpoints de product, en el request debe ir tambien el token
 //indicamos el nombre de nuestra strategy 'jwt' que validará cada endpoint
-@UseGuards(AuthGuard('jwt'))
+//@UseGuards(AuthGuard('jwt'))
+//enviamos nuestro gaurd extendido
+@UseGuards(JwtAuthGuard)
 @ApiTags('products')
 @Controller('products')
 export class ProductsController {
   constructor(private productsService: ProductsService) {}
 
+  //indicamos que la forma de obtener los productos es Public
+  @Public()
   @Get()
   @ApiOperation({ summary: 'List of products' })
   getProducts(@Query() params: FilterProductsDto) {
     return this.productsService.findAll(params);
   }
 
+  @Public()
   @Get('filter')
   getProductFilter() {
     return `yo soy un filter`;
   }
 
+  @Public()
   @Get(':productId')
   @HttpCode(HttpStatus.ACCEPTED)
   getOne(@Param('productId', ParseIntPipe) productId: number) {
