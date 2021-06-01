@@ -10,6 +10,8 @@ import { AuthService } from './services/auth.service';
 import { UsersModule } from '../users/users.module';
 //local.strategy serpa tratado como un provider mas
 import { LocalStrategy } from './strategies/local.strategy';
+//strategy que maneja los JWT
+import { JwtStrategy } from './strategies/jwt.strategy';
 import { AuthController } from './controller/auth.controller';
 //config para leer la JWT_KEY del archivo .env
 import config from '../config';
@@ -40,7 +42,7 @@ import config from '../config';
       },
     }), */
   ],
-  providers: [AuthService, LocalStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy],
   controllers: [AuthController],
 })
 export class AuthModule {}

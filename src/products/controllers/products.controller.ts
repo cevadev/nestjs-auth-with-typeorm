@@ -10,6 +10,7 @@ import {
   HttpStatus,
   HttpCode,
   Res,
+  UseGuards,
   // ParseIntPipe,
 } from '@nestjs/common';
 import { Response } from 'express';
@@ -23,6 +24,12 @@ import {
 } from '../dtos/products.dtos';
 import { ProductsService } from './../services/products.service';
 
+//estrategia de guard
+import { AuthGuard } from '@nestjs/passport';
+
+//protegemos todos los endpoints de product, en el request debe ir tambien el token
+//indicamos el nombre de nuestra strategy 'jwt' que validará cada endpoint
+@UseGuards(AuthGuard('jwt'))
 @ApiTags('products')
 @Controller('products')
 export class ProductsController {

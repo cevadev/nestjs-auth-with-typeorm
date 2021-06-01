@@ -1,5 +1,4 @@
 //Una strategy es como un servicio
-
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 //la estrategia a usar es un password local
