@@ -19,16 +19,23 @@ const API_KEY_PROD = 'PROD1212121SA';
     TypeOrmModule.forRootAsync({
       inject: [config.KEY],
       useFactory: (configService: ConfigType<typeof config>) => {
-        const { user, host, dbName, password, port } = configService.postgres;
+        //descomentar aqui para conexion local
+        //const { user, host, dbName, password, port } = configService.postgres;
         return {
           type: 'postgres',
-          host,
+          url: configService.postgresUrl,
+          //descomentar aqui para conexion local
+          /* host,
           port,
           username: user,
           password,
-          database: dbName,
+          database: dbName, */
           synchronize: false,
           autoLoadEntities: true,
+          //habilitamos la confign ssl para heroku
+          ssl: {
+            rejectUnauthorized: false,
+          },
         };
       },
     }),
@@ -41,13 +48,20 @@ const API_KEY_PROD = 'PROD1212121SA';
     {
       provide: 'PG',
       useFactory: (configService: ConfigType<typeof config>) => {
-        const { user, host, dbName, password, port } = configService.postgres;
+        //descomentar para conexion local postgresql
+        //const { user, host, dbName, password, port } = configService.postgres;
         const client = new Client({
-          user,
+          connectionString: configService.postgresUrl,
+          //habilitamos la confign ssl para heroku
+          ssl: {
+            rejectUnauthorized: false,
+          },
+          //descomentar para conexion local postgresql
+          /* user,
           host,
           database: dbName,
           password,
-          port,
+          port, */
         });
         client.connect();
         return client;

@@ -6,6 +6,9 @@ export default registerAs('config', () => {
       name: process.env.DATABASE_NAME,
       port: process.env.DATABASE_PORT,
     },
+    //conexion en produccion con heroku
+    postgresUrl: process.env.DATABASE_URL,
+    //conexion local con postgresql
     postgres: {
       dbName: process.env.POSTGRES_DB,
       port: parseInt(process.env.POSTGRES_PORT, 10),
